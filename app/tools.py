@@ -92,7 +92,9 @@ def make_quiz(lecture: int) -> str:
     """
     terms = [entry for entry in load_glossary() if entry["lecture"] == lecture]
     if not terms:
-        return f"第{lecture}回の用語が用語集にありません。"
+        available = sorted({entry["lecture"] for entry in load_glossary()})
+        available_str = ", ".join(f"第{n}回" for n in available)
+        return f"第{lecture}回の用語は用語集にありません。クイズを作れる回: {available_str}"
 
     entry = random.choice(terms)
     return json.dumps(
